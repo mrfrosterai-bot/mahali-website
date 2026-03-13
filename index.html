@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAHALI — Halal Charcuterie Discovery Box</title>
+<meta name="description" content="Curated halal meat cuts, premium dates, and artisan pantry items delivered monthly. Discover something new. Share something real.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   MAHALI — Design System
+   ============================================ */
+:root {
+  --terracotta: #8B3A2A;
+  --terracotta-light: #A85440;
+  --terracotta-dark: #6E2D21;
+  --cream: #F5EDD6;
+  --cream-light: #FAF7F0;
+  --cream-warm: #EDE4CB;
+  --espresso: #1C1208;
+  --espresso-soft: #2E2011;
+  --gold: #C9A84C;
+  --gold-light: #D4BA6A;
+  --gold-muted: #B89B45;
+  --linen: #E8DFC8;
+  --sand: #D4C9AD;
+  --warm-gray: #9B8E7B;
+  --serif: 'Cormorant Garamond', 'Georgia', serif;
+  --sans: 'DM Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Reset */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--espresso);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* Selection */
+::selection {
+  background: var(--gold);
+  color: var(--espresso);
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.section-label {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-muted);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.section-label::before {
+  content: '';
+  width: 2rem;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* ============================================
+   Scroll Animations
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+/* ============================================
+   Navigation
+   ============================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.5s ease;
+}
+
+.nav.scrolled {
+  background: rgba(28, 18, 8, 0.92);
+  backdrop-filter: blur(12px);
+  padding: 1rem 2rem;
+}
+
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: all 0.3s;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+}
+
+.nav-links a:hover, .nav-links a:focus-visible { opacity: 1; background: rgba(201,168,76,0.15); }
+
+.nav-cta {
+  font-family: var(--sans) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--gold);
+  color: var(--gold) !important;
+  opacity: 1 !important;
+  transition: all 0.3s ease !important;
+}
+
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--espresso) !important;
+}
+
+/* Mobile menu */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.nav-toggle span {
+  width: 24px;
+  height: 1.5px;
+  background: var(--cream);
+  transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: rgba(28, 18, 8, 0.97);
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+}
+
+/* ============================================
+   HERO
+   ============================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--espresso);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(139, 58, 42, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(201, 168, 76, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(46, 32, 17, 0.8) 0%, transparent 80%),
+    linear-gradient(160deg, #1C1208 0%, #2E2011 30%, #3D2A16 50%, #2E2011 70%, #1C1208 100%);
+}
+
+/* Linen texture pattern */
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23F5EDD6' fill-opacity='1'%3E%3Cpath d='M0 0h1v1H0zM4 0h1v1H4zM8 0h1v1H8zM12 0h1v1h-1zM16 0h1v1h-1zM20 0h1v1h-1zM24 0h1v1h-1zM28 0h1v1h-1zM32 0h1v1h-1zM36 0h1v1h-1zM2 2h1v1H2zM6 2h1v1H6zM10 2h1v1h-1zM14 2h1v1h-1zM18 2h1v1h-1zM22 2h1v1h-1zM26 2h1v1h-1zM30 2h1v1h-1zM34 2h1v1h-1zM38 2h1v1h-1zM0 4h1v1H0zM4 4h1v1H4zM8 4h1v1H8zM12 4h1v1h-1zM16 4h1v1h-1zM20 4h1v1h-1zM24 4h1v1h-1zM28 4h1v1h-1zM32 4h1v1h-1zM36 4h1v1h-1z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Decorative gold lines */
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  width: 1px;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  opacity: 0.3;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  max-width: 900px;
+}
+
+.hero-eyebrow {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--cream);
+  line-height: 0.95;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1.2s 0.5s forwards;
+}
+
+.hero-tagline {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--linen);
+  opacity: 0;
+  animation: fadeUp 1s 0.8s forwards;
+  margin-bottom: 0.5rem;
+}
+
+.hero-sub {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 1s 1s forwards;
+}
+
+.hero-cta {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--espresso);
+  background: var(--gold);
+  padding: 1.1rem 3rem;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(.25,.8,.25,1);
+  opacity: 0;
+  animation: fadeUp 1s 1.2s forwards;
+}
+
+.hero-cta:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.hero-cta:hover {
+  background: var(--cream);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(201, 168, 76, 0.35);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+  animation: fadeUp 1s 1.5s forwards;
+}
+
+.hero-scroll span {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* Gold corner accents */
+.hero-corner {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  z-index: 2;
+}
+
+.hero-corner--tl { top: 3rem; left: 3rem; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); opacity: 0.3; }
+.hero-corner--tr { top: 3rem; right: 3rem; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); opacity: 0.3; }
+.hero-corner--bl { bottom: 3rem; left: 3rem; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); opacity: 0.3; }
+.hero-corner--br { bottom: 3rem; right: 3rem; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); opacity: 0.3; }
+
+/* ============================================
+   SECTION: What's Inside
+   ============================================ */
+.whats-inside {
+  padding: 8rem 2rem;
+  background: var(--cream);
+  position: relative;
+}
+
+.whats-inside .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-heading {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 300;
+  color: var(--espresso);
+  margin-bottom: 1rem;
+}
+
+.section-intro {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--warm-gray);
+  max-width: 550px;
+  line-height: 1.7;
+  margin-bottom: 4rem;
+}
+
+.box-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .box-grid { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+.box-card {
+  position: relative;
+  background: var(--cream-light);
+  border: 1px solid var(--linen);
+  padding: 3rem 2.5rem;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.box-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(28, 18, 8, 0.08);
+  border-color: var(--gold);
+}
+
+.box-card-number {
+  font-family: var(--serif);
+  font-size: 5rem;
+  font-weight: 300;
+  color: var(--linen);
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.box-card-name {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--espresso);
+  margin-bottom: 0.5rem;
+}
+
+.box-card-price {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--gold-muted);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.box-card-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.box-card-list li {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--warm-gray);
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.box-card-list li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.box-card-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.box-card:hover .box-card-accent { opacity: 1; }
+
+/* ============================================
+   SECTION: The Experience
+   ============================================ */
+.experience {
+  padding: 8rem 2rem;
+  background: var(--espresso);
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+
+.experience::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  opacity: 0.3;
+}
+
+.experience .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.experience .section-label { color: var(--gold); }
+
+.experience .section-heading { color: var(--cream); }
+
+.experience .section-intro { color: var(--sand); }
+
+.exp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  margin-top: 4rem;
+}
+
+@media (max-width: 768px) {
+  .exp-grid { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+.exp-visual {
+  position: relative;
+  aspect-ratio: 4/5;
+  background:
+    radial-gradient(ellipse at 40% 30%, rgba(139, 58, 42, 0.3) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(201, 168, 76, 0.15) 0%, transparent 50%),
+    linear-gradient(135deg, #2E2011 0%, #3D2A16 50%, #2E2011 100%);
+  overflow: hidden;
+}
+
+.exp-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.exp-visual-text {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 2.5rem;
+  right: 2.5rem;
+}
+
+.exp-visual-text h3 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+
+.exp-visual-text p {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--sand);
+  letter-spacing: 0.05em;
+}
+
+/* Decorative pattern inside visual */
+.exp-visual-pattern {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 80px;
+  height: 80px;
+  opacity: 0.2;
+}
+
+.exp-visual-pattern svg {
+  width: 100%;
+  height: 100%;
+}
+
+.exp-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.exp-step {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.exp-step-num {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 2.5rem;
+}
+
+.exp-step-content h4 {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+
+.exp-step-content p {
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  color: var(--sand);
+  line-height: 1.7;
+}
+
+/* ============================================
+   SECTION: Why Halal
+   ============================================ */
+.why-halal {
+  padding: 8rem 2rem;
+  background: var(--cream-light);
+  position: relative;
+}
+
+.why-halal .container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.why-halal-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .why-halal-grid { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+.why-halal-text h3 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 400;
+  color: var(--espresso);
+  margin-bottom: 1.5rem;
+  line-height: 1.25;
+}
+
+.why-halal-text p {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--warm-gray);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.why-halal-values {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.value-item {
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--gold);
+}
+
+.value-item h4 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--espresso);
+  margin-bottom: 0.3rem;
+}
+
+.value-item p {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--warm-gray);
+  line-height: 1.6;
+}
+
+/* Pull quote */
+.pull-quote {
+  position: relative;
+  padding: 2.5rem;
+  background: var(--cream);
+  border: 1px solid var(--linen);
+}
+
+.pull-quote::before {
+  content: '"';
+  font-family: var(--serif);
+  font-size: 6rem;
+  color: var(--gold);
+  opacity: 0.3;
+  position: absolute;
+  top: -0.5rem;
+  left: 1.5rem;
+  line-height: 1;
+}
+
+.pull-quote p {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--espresso);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.pull-quote cite {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-muted);
+}
+
+/* ============================================
+   SECTION: Our Producers
+   ============================================ */
+.producers {
+  padding: 8rem 2rem;
+  background: var(--cream);
+  position: relative;
+}
+
+.producers::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--linen), transparent);
+}
+
+.producers .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.producers-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 5rem;
+}
+
+@media (max-width: 768px) {
+  .producers-intro { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.producers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .producers-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 500px) {
+  .producers-grid { grid-template-columns: 1fr; }
+}
+
+.producer-card {
+  position: relative;
+  padding: 2.5rem 2rem;
+  background: var(--cream-light);
+  border: 1px solid var(--linen);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.producer-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.producer-card:hover::before { transform: scaleX(1); }
+
+.producer-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(28, 18, 8, 0.06);
+}
+
+.producer-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--cream);
+  border: 1px solid var(--linen);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  color: var(--terracotta);
+}
+
+.producer-card h4 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--espresso);
+  margin-bottom: 0.3rem;
+}
+
+.producer-card .producer-location {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-muted);
+  margin-bottom: 1rem;
+}
+
+.producer-card p {
+  font-family: var(--sans);
+  font-size: 0.83rem;
+  color: var(--warm-gray);
+  line-height: 1.6;
+}
+
+/* ============================================
+   SECTION: Pricing
+   ============================================ */
+.pricing {
+  padding: 8rem 2rem;
+  background: var(--espresso);
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  opacity: 0.3;
+}
+
+/* Subtle radial accent */
+.pricing::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(139, 58, 42, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.pricing .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.pricing .section-heading { color: var(--cream); }
+.pricing .section-intro { color: var(--sand); }
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+@media (max-width: 900px) {
+  .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin-left: auto; margin-right: auto; }
+}
+
+.pricing-card {
+  position: relative;
+  padding: 3rem 2.5rem;
+  background: rgba(46, 32, 17, 0.5);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pricing-card:hover {
+  border-color: rgba(201, 168, 76, 0.4);
+  transform: translateY(-4px);
+}
+
+.pricing-card.featured {
+  border-color: var(--gold);
+  background: rgba(201, 168, 76, 0.08);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -1px;
+  right: 2rem;
+  background: var(--gold);
+  color: var(--espresso);
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+}
+
+.pricing-card-name {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 0.3rem;
+}
+
+.pricing-card-desc {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--sand);
+  margin-bottom: 2rem;
+}
+
+.pricing-card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  margin-bottom: 2rem;
+}
+
+.pricing-card-price .currency {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+.pricing-card-price .amount {
+  font-family: var(--serif);
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.pricing-card-price .period {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--warm-gray);
+}
+
+.pricing-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(201, 168, 76, 0.15);
+  margin-bottom: 2rem;
+}
+
+.pricing-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2.5rem;
+}
+
+.pricing-features li {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--sand);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pricing-features li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pricing-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 1rem;
+  text-decoration: none;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--gold);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pricing-cta:hover {
+  background: var(--gold);
+  color: var(--espresso);
+  border-color: var(--gold);
+}
+
+.pricing-card.featured .pricing-cta {
+  background: var(--gold);
+  color: var(--espresso);
+  border-color: var(--gold);
+}
+
+.pricing-card.featured .pricing-cta:hover {
+  background: var(--cream);
+  border-color: var(--cream);
+}
+
+/* ============================================
+   SECTION: Waitlist
+   ============================================ */
+.waitlist {
+  padding: 8rem 2rem;
+  background: var(--cream-warm);
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.waitlist::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.waitlist .container {
+  max-width: 650px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.waitlist .section-label {
+  justify-content: center;
+}
+
+.waitlist .section-label::before { display: none; }
+
+.waitlist .section-heading {
+  margin-bottom: 1.5rem;
+}
+
+.waitlist-desc {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--warm-gray);
+  margin-bottom: 3rem;
+  line-height: 1.7;
+}
+
+.waitlist-form {
+  display: flex;
+  gap: 0;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+@media (max-width: 500px) {
+  .waitlist-form { flex-direction: column; gap: 1rem; }
+}
+
+.waitlist-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  background: var(--cream-light);
+  border: 1px solid var(--linen);
+  border-right: none;
+  color: var(--espresso);
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+@media (max-width: 500px) {
+  .waitlist-input { border-right: 1px solid var(--linen); }
+}
+
+.waitlist-input::placeholder {
+  color: var(--warm-gray);
+}
+
+.waitlist-input:focus {
+  border-color: var(--gold);
+}
+
+.waitlist-btn {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  background: var(--terracotta);
+  color: var(--cream);
+  border: 1px solid var(--terracotta);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.waitlist-btn:hover {
+  background: var(--terracotta-dark);
+}
+
+.waitlist-note {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--warm-gray);
+  letter-spacing: 0.05em;
+}
+
+.waitlist-success {
+  display: none;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--terracotta);
+  margin-top: 1rem;
+}
+
+.waitlist-success.show { display: block; }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  padding: 5rem 2rem 3rem;
+  background: var(--espresso);
+  color: var(--cream);
+}
+
+.footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+@media (max-width: 768px) {
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+}
+
+@media (max-width: 500px) {
+  .footer-top { grid-template-columns: 1fr; }
+}
+
+.footer-brand h3 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--cream);
+  margin-bottom: 1rem;
+}
+
+.footer-brand p {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--sand);
+  max-width: 300px;
+  line-height: 1.6;
+}
+
+.footer-col h4 {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.footer-col a {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--sand);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-col a:hover { color: var(--cream); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-copyright {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--warm-gray);
+}
+
+.footer-social {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-social a {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-social a:hover { color: var(--gold); }
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+.text-gold { color: var(--gold); }
+
+/* Horizontal rule accent */
+.section-rule {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 2rem 0;
+  opacity: 0.5;
+}
+
+/* Decorative diamond */
+.diamond {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  margin: 0 0.75rem;
+  vertical-align: middle;
+}
+
+/* ═══════════ DARK MODE ═══════════ */
+[data-theme="dark"] {
+  --espresso: #F5EDD6;
+  --cream: #1C1208;
+  --linen: #2a2218;
+  --terracotta: #c05a3a;
+}
+[data-theme="dark"] body { background: #0e0a06; color: #F5EDD6; }
+[data-theme="dark"] .nav { background: rgba(14,10,6,0.95); }
+[data-theme="dark"] .nav-links a { color: #F5EDD6; }
+[data-theme="dark"] .hero { background: linear-gradient(180deg, #0e0a06 0%, #1a1408 50%, #0e0a06 100%); }
+[data-theme="dark"] .hero-title { color: #F5EDD6; }
+[data-theme="dark"] .section-heading { color: #F5EDD6; }
+[data-theme="dark"] .section-label { color: #C9A84C; }
+[data-theme="dark"] .inside-card { background: #1a1408; border-color: #2a2218; }
+[data-theme="dark"] .inside-card h3 { color: #F5EDD6; }
+[data-theme="dark"] .inside-card p, [data-theme="dark"] .inside-item { color: #b8a88a; }
+[data-theme="dark"] .experience { background: #1a1408; }
+[data-theme="dark"] .experience-text h3 { color: #F5EDD6; }
+[data-theme="dark"] .experience-text p { color: #b8a88a; }
+[data-theme="dark"] .values { background: #0e0a06; }
+[data-theme="dark"] .value-item h3 { color: #F5EDD6; }
+[data-theme="dark"] .value-item p { color: #b8a88a; }
+[data-theme="dark"] .producer-card { background: #1a1408; border-color: #2a2218; }
+[data-theme="dark"] .producer-card h3 { color: #F5EDD6; }
+[data-theme="dark"] .producer-card p { color: #b8a88a; }
+[data-theme="dark"] .pricing { background: #0e0a06; }
+[data-theme="dark"] .pricing-card { background: #1a1408; border-color: #2a2218; }
+[data-theme="dark"] .pricing-card h3 { color: #F5EDD6; }
+[data-theme="dark"] .pricing-price { color: #C9A84C; }
+[data-theme="dark"] .pricing-feature { color: #b8a88a; border-color: #2a2218; }
+[data-theme="dark"] .waitlist { background: #1a1408; }
+[data-theme="dark"] .waitlist-input { background: #0e0a06; border-color: #2a2218; color: #F5EDD6; }
+[data-theme="dark"] .footer { background: #0a0804; }
+[data-theme="dark"] .footer a { color: #b8a88a; }
+[data-theme="dark"] .footer a:hover { color: #C9A84C; }
+[data-theme="dark"] .pull-quote { background: #1a1408; border-color: #C9A84C; }
+[data-theme="dark"] .pull-quote p { color: #F5EDD6; }
+[data-theme="dark"] #themeToggle { border-color: #2a2218; color: #F5EDD6; }
+
+/* App Store badges */
+.store-badges { display: flex; gap: 1rem; justify-content: center; align-items: center; margin-top: 2rem; flex-wrap: wrap; }
+.store-badge-img { height: 50px; transition: opacity 0.3s; }
+.store-badge-img:hover { opacity: 0.8; }
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; opacity: 1; transform: none; }
+  .hero-scroll-line { animation: none; }
+  .hero-cta { animation: none; opacity: 1; }
+}
+/* Producer card focus */
+.producer-card { will-change: transform; }
+.producer-card a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">MAHALI</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#inside">The Box</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#producers">Producers</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#waitlist" class="nav-cta">Join Waitlist</a></li>
+    <li>
+      <button id="themeToggle" aria-label="Toggle dark mode" style="background:none;border:2px solid var(--linen);cursor:pointer;font-size:1.2rem;padding:4px 10px;border-radius:9999px;transition:all 0.3s;color:var(--cream);">🌙</button>
+    </li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-corner hero-corner--tl"></div>
+  <div class="hero-corner hero-corner--tr"></div>
+  <div class="hero-corner hero-corner--bl"></div>
+  <div class="hero-corner hero-corner--br"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Halal Charcuterie · Delivered Monthly</p>
+    <h1 class="hero-title">MAHALI</h1>
+    <p class="hero-tagline">Discover something new. Share something real.</p>
+    <p class="hero-sub">Discover <span class="diamond"></span> Share <span class="diamond"></span> Savor</p>
+    <a href="#waitlist" class="hero-cta">Join the Waitlist</a>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- What's Inside -->
+<section class="whats-inside" id="inside">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">What's Inside</p>
+      <h2 class="section-heading">Curated for<br>Discovery</h2>
+      <p class="section-intro">Every box is an invitation — rare halal cuts you won't find at your local store, paired with premium dates, artisan condiments, and a guide to build something beautiful.</p>
+    </div>
+    <div class="box-grid">
+      <div class="box-card reveal reveal-delay-1">
+        <div class="box-card-number">01</div>
+        <h3 class="box-card-name">The Curious</h3>
+        <p class="box-card-price">Starting at $45 / month</p>
+        <ul class="box-card-list">
+          <li>3 curated halal cuts</li>
+          <li>Premium Medjool dates</li>
+          <li>1 artisan condiment</li>
+          <li>Tasting guide card</li>
+        </ul>
+        <div class="box-card-accent"></div>
+      </div>
+      <div class="box-card reveal reveal-delay-2">
+        <div class="box-card-number">02</div>
+        <h3 class="box-card-name">The Explorer</h3>
+        <p class="box-card-price">Starting at $75 / month</p>
+        <ul class="box-card-list">
+          <li>5 curated halal cuts</li>
+          <li>Premium varietal dates</li>
+          <li>2 artisan condiments</li>
+          <li>Full board styling kit</li>
+          <li>Pairing recipe card</li>
+        </ul>
+        <div class="box-card-accent"></div>
+      </div>
+      <div class="box-card reveal reveal-delay-3">
+        <div class="box-card-number">03</div>
+        <h3 class="box-card-name">The Connoisseur</h3>
+        <p class="box-card-price">Starting at $120 / month</p>
+        <ul class="box-card-list">
+          <li>7+ reserve halal cuts</li>
+          <li>Rare single-origin dates</li>
+          <li>Artisan extras & spreads</li>
+          <li>Premium board accessories</li>
+          <li>Exclusive producer stories</li>
+        </ul>
+        <div class="box-card-accent"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- The Experience -->
+<section class="experience" id="experience">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">The Experience</p>
+      <h2 class="section-heading">More Than<br>a Box</h2>
+      <p class="section-intro">Every delivery is a journey — from doorstep to board to table. We handle the curation so you can focus on the moment.</p>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-visual reveal reveal-delay-1">
+        <div class="exp-visual-pattern">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="80" height="80" stroke="#C9A84C" stroke-width="0.5"/>
+            <rect x="10" y="10" width="60" height="60" stroke="#C9A84C" stroke-width="0.5"/>
+            <rect x="20" y="20" width="40" height="40" stroke="#C9A84C" stroke-width="0.5"/>
+            <rect x="30" y="30" width="20" height="20" stroke="#C9A84C" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="exp-visual-text">
+          <h3>Every Cut<br>Has a Story</h3>
+          <p>Sourced from farms that share our values.</p>
+        </div>
+      </div>
+      <div class="exp-steps">
+        <div class="exp-step reveal reveal-delay-1">
+          <span class="exp-step-num">1</span>
+          <div class="exp-step-content">
+            <h4>We Source</h4>
+            <p>Our team partners with halal-certified farms and artisan producers across the country. Every cut is hand-selected for quality, rarity, and story.</p>
+          </div>
+        </div>
+        <div class="exp-step reveal reveal-delay-2">
+          <span class="exp-step-num">2</span>
+          <div class="exp-step-content">
+            <h4>We Curate</h4>
+            <p>Each month, a new theme. A new region. A new flavor profile. We pair cuts with dates, condiments, and board accessories that make sense together.</p>
+          </div>
+        </div>
+        <div class="exp-step reveal reveal-delay-3">
+          <span class="exp-step-num">3</span>
+          <div class="exp-step-content">
+            <h4>You Discover</h4>
+            <p>Open. Arrange. Share. Your guide card walks you through every item — where it's from, how it's made, and the best way to serve it. No expertise needed.</p>
+          </div>
+        </div>
+        <div class="exp-step reveal reveal-delay-4">
+          <span class="exp-step-num">4</span>
+          <div class="exp-step-content">
+            <h4>You Gather</h4>
+            <p>This isn't just food. It's a reason to slow down, invite people over, and create something together. Mahali means "my place" — and that's exactly the feeling we're after.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Halal -->
+<section class="why-halal" id="halal">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Our Standard</p>
+      <h2 class="section-heading">Halal Is<br>the Beginning</h2>
+    </div>
+    <div class="why-halal-grid">
+      <div class="why-halal-text reveal reveal-delay-1">
+        <h3>Quality you can taste. Ethics you can trust.</h3>
+        <p>Halal isn't just a certification — it's a philosophy of care. From how animals are raised to how they're processed, every step reflects a commitment to doing things right.</p>
+        <p>We partner exclusively with producers who go beyond the minimum. Pasture-raised. Humanely handled. Traceable from farm to your front door.</p>
+        <div class="section-rule"></div>
+        <div class="why-halal-values">
+          <div class="value-item reveal reveal-delay-2">
+            <h4>Ethical Sourcing</h4>
+            <p>Every producer in our network is verified for humane animal treatment, sustainable practices, and full halal compliance.</p>
+          </div>
+          <div class="value-item reveal reveal-delay-3">
+            <h4>Cultural Celebration</h4>
+            <p>Charcuterie has always existed in halal cuisines — from Turkish pastırma to Moroccan khlii. We're bringing those traditions to the modern table.</p>
+          </div>
+          <div class="value-item reveal reveal-delay-4">
+            <h4>Radical Transparency</h4>
+            <p>Know your farmer. Know your butcher. Every item in your box comes with its origin story and certifications.</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="pull-quote">
+          <p>We didn't start Mahali to sell meat. We started it because our families deserved the same charcuterie experience everyone else has — without compromise.</p>
+          <cite>— The Mahali Team</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Our Producers -->
+<section class="producers" id="producers">
+  <div class="container">
+    <div class="producers-intro">
+      <div class="reveal">
+        <p class="section-label">Our Producers</p>
+        <h2 class="section-heading">The Hands<br>Behind the Craft</h2>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <p class="section-intro" style="margin-bottom: 0;">We work with a small, trusted network of halal-certified farms and artisan producers. Each one shares our obsession with quality, transparency, and doing things the right way.</p>
+      </div>
+    </div>
+    <div class="producers-grid">
+      <div class="producer-card reveal reveal-delay-1">
+        <div class="producer-icon">HC</div>
+        <h4>Honest Chops</h4>
+        <p class="producer-location">New York, NY</p>
+        <p>Whole-animal halal butchery. Pasture-raised, hand-cut, and delivered with the care of a neighborhood shop.</p>
+      </div>
+      <div class="producer-card reveal reveal-delay-2">
+        <div class="producer-icon">H&A</div>
+        <h4>Hal&Al Meats</h4>
+        <p class="producer-location">Chicago, IL</p>
+        <p>Family-owned since 2012. Specializing in heritage breeds and old-world curing techniques adapted for halal standards.</p>
+      </div>
+      <div class="producer-card reveal reveal-delay-3">
+        <div class="producer-icon">SD</div>
+        <h4>Saffron & Date Co.</h4>
+        <p class="producer-location">Coachella Valley, CA</p>
+        <p>Single-origin Medjool and Deglet Noor dates from family-owned groves. Sun-ripened, hand-sorted, extraordinary.</p>
+      </div>
+      <div class="producer-card reveal reveal-delay-4">
+        <div class="producer-icon">BF</div>
+        <h4>Barakah Farms</h4>
+        <p class="producer-location">Lancaster, PA</p>
+        <p>100% grass-fed, pasture-raised lamb and beef. No antibiotics, no hormones — just clean, honest farming.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Pricing</p>
+      <h2 class="section-heading">Choose Your<br>Journey</h2>
+      <p class="section-intro">Every tier is crafted to surprise and delight. Start curious. Go deeper when you're ready.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal reveal-delay-1">
+        <h3 class="pricing-card-name">The Curious</h3>
+        <p class="pricing-card-desc">Your first step into halal charcuterie</p>
+        <div class="pricing-card-price">
+          <span class="currency">$</span>
+          <span class="amount">45</span>
+          <span class="period">/ month</span>
+        </div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>3 curated halal cuts</li>
+          <li>Premium Medjool dates</li>
+          <li>1 artisan condiment</li>
+          <li>Illustrated tasting guide</li>
+          <li>Free shipping</li>
+        </ul>
+        <a href="#waitlist" class="pricing-cta">Join Waitlist</a>
+      </div>
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="pricing-badge">Most Popular</div>
+        <h3 class="pricing-card-name">The Explorer</h3>
+        <p class="pricing-card-desc">The full board experience</p>
+        <div class="pricing-card-price">
+          <span class="currency">$</span>
+          <span class="amount">75</span>
+          <span class="period">/ month</span>
+        </div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>5 curated halal cuts</li>
+          <li>Premium varietal dates</li>
+          <li>2 artisan condiments</li>
+          <li>Full board styling kit</li>
+          <li>Pairing recipe card</li>
+          <li>Priority shipping</li>
+        </ul>
+        <a href="#waitlist" class="pricing-cta">Join Waitlist</a>
+      </div>
+      <div class="pricing-card reveal reveal-delay-3">
+        <h3 class="pricing-card-name">The Connoisseur</h3>
+        <p class="pricing-card-desc">For the devoted food explorer</p>
+        <div class="pricing-card-price">
+          <span class="currency">$</span>
+          <span class="amount">120</span>
+          <span class="period">/ month</span>
+        </div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>7+ reserve halal cuts</li>
+          <li>Rare single-origin dates</li>
+          <li>Artisan extras & spreads</li>
+          <li>Premium board accessories</li>
+          <li>Exclusive producer stories</li>
+          <li>Concierge shipping</li>
+        </ul>
+        <a href="#waitlist" class="pricing-cta">Join Waitlist</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Waitlist -->
+<section class="waitlist" id="waitlist">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Be First</p>
+      <h2 class="section-heading">Be First<br>to Taste</h2>
+      <p class="waitlist-desc">We're putting the finishing touches on our first boxes. Join the waitlist and you'll be the first to know when we launch — plus early subscribers get founding member pricing.</p>
+    </div>
+    <form class="waitlist-form reveal reveal-delay-1" id="waitlistForm">
+      <input type="email" class="waitlist-input" placeholder="Your email address" required aria-label="Email address">
+      <button type="submit" class="waitlist-btn">Join Now</button>
+    </form>
+    <p class="waitlist-note reveal reveal-delay-2">No spam. Just one beautifully crafted launch email.</p>
+    <p class="waitlist-success" id="waitlistSuccess">Welcome to the table. We'll be in touch soon. ✦</p>
+    
+    <div class="store-badges reveal reveal-delay-3">
+      <a href="https://apps.apple.com/app/mahali" target="_blank" rel="noopener">
+        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" class="store-badge-img">
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=com.mahali.app" target="_blank" rel="noopener">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" class="store-badge-img" style="height:58px;">
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>MAHALI</h3>
+        <p>Discover something new.<br>Share something real.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#inside">What's Inside</a></li>
+          <li><a href="#experience">The Experience</a></li>
+          <li><a href="#producers">Our Producers</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Halal Standards</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright">&copy; 2026 Mahali. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/mahalihq" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com/@mahalihq" target="_blank" rel="noopener">TikTok</a>
+        <a href="mailto:hello@mahali.co">Email</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============================================
+// Navigation scroll effect
+// ============================================
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
+  if (currentScroll > 80) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+  lastScroll = currentScroll;
+}, { passive: true });
+
+// Mobile menu toggle
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+
+navToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+
+// Close menu on link click
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+  });
+});
+
+// ============================================
+// Scroll reveal animations
+// ============================================
+const revealElements = document.querySelectorAll('.reveal');
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.12,
+  rootMargin: '0px 0px -60px 0px'
+});
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// ============================================
+// Waitlist form
+// ============================================
+const waitlistForm = document.getElementById('waitlistForm');
+const waitlistSuccess = document.getElementById('waitlistSuccess');
+
+waitlistForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const email = waitlistForm.querySelector('input[type="email"]').value;
+  
+  // Log to console (replace with actual API call)
+  console.log('Waitlist signup:', email);
+  
+  // Show success
+  waitlistForm.style.display = 'none';
+  waitlistSuccess.classList.add('show');
+  document.querySelector('.waitlist-note').style.display = 'none';
+});
+
+// ============================================
+// Smooth parallax on hero elements
+// ============================================
+window.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const hero = document.querySelector('.hero-content');
+  if (hero && scrolled < window.innerHeight) {
+    hero.style.transform = `translateY(${scrolled * 0.15}px)`;
+    hero.style.opacity = 1 - (scrolled / (window.innerHeight * 0.8));
+  }
+}, { passive: true });
+
+// ============================================
+// Dark Mode Toggle
+// ============================================
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('mahali-theme');
+if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  themeToggle.textContent = '☀️';
+}
+themeToggle.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    document.documentElement.removeAttribute('data-theme');
+    themeToggle.textContent = '🌙';
+    localStorage.setItem('mahali-theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeToggle.textContent = '☀️';
+    localStorage.setItem('mahali-theme', 'dark');
+  }
+});
+</script>
+
+</body>
+</html>
